@@ -19,12 +19,15 @@ import static com.github.mobile.Intents.EXTRA_REPOSITORY;
 import android.app.Activity;
 
 import com.github.mobile.core.ResourcePager;
+import com.github.mobile.core.user.UserEventMatcher.UserPair;
 import com.github.mobile.ui.NewsFragment;
 import com.github.mobile.ui.issue.IssuesViewActivity;
 import com.github.mobile.ui.user.EventPager;
+import com.github.mobile.ui.user.UserViewActivity;
 
 import org.eclipse.egit.github.core.Issue;
 import org.eclipse.egit.github.core.Repository;
+import org.eclipse.egit.github.core.User;
 import org.eclipse.egit.github.core.client.PageIterator;
 import org.eclipse.egit.github.core.event.Event;
 
@@ -67,5 +70,20 @@ public class RepositoryNewsFragment extends NewsFragment {
     @Override
     protected void viewIssue(Issue issue, Repository repository) {
         startActivity(IssuesViewActivity.createIntent(issue, repo));
+    }
+
+    @Override
+    protected boolean viewUser(User user) {
+        if (repo.getOwner().getId() != user.getId()) {
+            startActivity(UserViewActivity.createIntent(user));
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    protected void viewUser(UserPair users) {
+        if (!viewUser(users.from))
+            viewUser(users.to);
     }
 }

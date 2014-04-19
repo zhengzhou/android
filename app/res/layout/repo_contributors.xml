@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  Copyright 2012 GitHub Inc.
+  Copyright 2013 GitHub Inc.
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -15,21 +15,21 @@
   limitations under the License.
 -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-  android:layout_width="match_parent"
-  android:layout_height="match_parent" >
-
-  <View
-    android:id="@+id/v_header_separator"
-    style="@style/HeaderSeparator"
-    android:layout_alignParentLeft="true"
-    android:layout_alignParentTop="true" />
-
-  <fragment
-    android:id="@android:id/list"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_alignParentLeft="true"
-    android:layout_below="@id/v_header_separator"
-    class="com.github.mobile.ui.repo.SearchRepositoryListFragment" />
+    android:layout_height="match_parent">
+
+    <View
+        android:id="@+id/v_header_separator"
+        style="@style/HeaderSeparator"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"/>
+
+    <fragment
+        android:id="@android:id/list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@id/v_header_separator"
+        class="com.github.mobile.ui.repo.RepositoryContributorsFragment"/>
 
 </RelativeLayout>

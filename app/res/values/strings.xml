@@ -21,6 +21,7 @@
     <string name="error_issues_load">Loading issues failed</string>
     <string name="error_repos_load">Loading repositories failed</string>
     <string name="error_repo_load">Loading repository failed</string>
+    <string name="error_contributors_load">Loading contributors failed</string>
     <string name="error_gist_load">Loading Gist failed</string>
     <string name="error_news_load">Loading news failed</string>
     <string name="error_followers_load">Loading followers failed</string>
@@ -46,6 +47,7 @@
     <string name="error_unstarring_repository">Unstarring failed</string>
     <string name="error_checking_starring_status">Checking starring status failed</string>
     <string name="error_rendering_markdown">Rendering markdown failed</string>
+    <string name="error_users_search">Searching users failed</string>
     <!--  -->
 
 
@@ -73,6 +75,7 @@
     <!-- Empty messages -->
     <string name="no_bookmarks">No Bookmarks</string>
     <string name="no_repositories">No Repositories</string>
+    <string name="no_contributors">No contributors</string>
     <string name="no_issues">No Issues</string>
     <string name="no_gists">No Gists</string>
     <string name="no_people">No People</string>
@@ -95,6 +98,7 @@
     <string name="issues">Issues</string>
     <string name="gists">Gists</string>
     <string name="commits">Commits</string>
+    <string name="global_search">GitHub search</string>
     <string name="find_repositories">Find Repositories</string>
     <string name="find_issues">Find Issues</string>
     <string name="search_title">Search…</string>
@@ -131,6 +135,7 @@
     <string name="comment_hint">Enter a comment</string>
     <string name="show_more">Show More…</string>
     <string name="repositories">Repositories</string>
+    <string name="contributors">Contributors</string>
     <string name="issues_title">Issues</string>
     <string name="edit_labels">Edit Labels</string>
     <string name="milestone_prefix">Milestone:</string>
@@ -147,6 +152,8 @@
     <string name="select_milestone">Select Milestone</string>
     <string name="select_labels">Select Labels</string>
     <string name="select_ref">Select Branch or Tag</string>
+    <string name="enter_otp_code_title">Authentication Code</string>
+    <string name="enter_otp_code_message">Two-factor authentication is enabled for your account. Enter your authentication code to verify your identity.</string>
     <string name="no_milestone">No milestone</string>
     <string name="unassigned">No one is assigned</string>
     <string name="assigned">is assigned</string>
@@ -160,7 +167,10 @@
     <string name="new_issue">New Issue</string>
     <string name="anonymous">Anonymous</string>
     <string name="message_filter_saved">Issue filter saved to bookmarks</string>
+    <string name="recently_viewed">RECENTLY VIEWED</string>
     <string name="recent">Recent</string>
+    <string name="recent_remove">Remove Recent</string>
+    <string name="recent_list_remove">Remove from recently used</string>
     <string name="section_issue_status">Status:</string>
     <string name="status_open">Open</string>
     <string name="status_closed">Closed</string>
@@ -171,11 +181,12 @@
     <string name="section_issue_labels">Labels:</string>
     <string name="log_in">Log in</string>
     <string name="signup_link">New to GitHub? &lt;a href=\"https://github.com/plans\">Click here&lt;/a> to sign up</string>
+    <string name="signup_link_two_factor_auth">Not sure what to do? &lt;a href=\"https://help.github.com/articles/about-two-factor-authentication\">Get some help.&lt;/a></string>
     <string name="connection_failed">Unable to connect to GitHub</string>
     <string name="invalid_login_or_password">Please enter a valid login &amp; password</string>
     <string name="invalid_password">Please enter a valid password.</string>
     <string name="password">Password</string>
-    <string name="login_or_email">Login or Email</string>
+    <string name="username_or_email">Username or Email</string>
     <string name="followers">Followers</string>
     <string name="following">Following</string>
     <string name="followers_self">Followers</string>
@@ -193,6 +204,7 @@
     <string name="prefix_updated">updated\u0020</string>
     <string name="prefix_opened">opened\u0020</string>
     <string name="clear">Clear</string>
+    <string name="pull_request_commits">Commits: %d</string>
     <string name="open_issues">Open Issues</string>
     <string name="closed_issues">Closed Issues</string>
     <string name="confirm_bookmark_delete_title">Remove Bookmark</string>
@@ -212,7 +224,6 @@
     <string name="reopen">Reopen</string>
     <string name="title_invalid_github_url">Invalid GitHub URL</string>
     <string name="message_invalid_github_url">The following URL could not be opened by this application:\n{0}</string>
-    <string name="recently_viewed">RECENTLY VIEWED</string>
     <string name="cancel">Cancel</string>
     <string name="authenticator_conflict_title">App Conflict</string>
     <string name="authenticator_conflict_message">Another installed app is already configured for GitHub authentication.\n\nYou must remove the other app from the Accounts &amp; sync settings and uninstall it before the GitHub app can be used.</string>
@@ -234,9 +245,12 @@
     <string name="starring_repository">Starring…</string>
     <string name="unstarring_repository">Unstarring…</string>
     <string name="navigate_to">Navigate to…</string>
+    <string name="navigate_to_user">Navigate to %s</string>
+    <string name="contributions">%d commits</string>
 
     <!-- Tab titles, should be as short as possible -->
     <string name="tab_repositories">repositories</string>
+    <string name="tab_users">users</string>
     <string name="tab_news">news</string>
     <string name="tab_following_self">following</string>
     <string name="tab_followers_self">followers</string>

@@ -24,6 +24,7 @@ import static com.github.mobile.Intents.EXTRA_USER;
 import static com.github.mobile.RequestCodes.ISSUE_ASSIGNEE_UPDATE;
 import static com.github.mobile.RequestCodes.ISSUE_LABELS_UPDATE;
 import static com.github.mobile.RequestCodes.ISSUE_MILESTONE_UPDATE;
+import android.accounts.Account;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -43,6 +44,8 @@ import com.github.mobile.R.id;
 import com.github.mobile.R.layout;
 import com.github.mobile.R.menu;
 import com.github.mobile.R.string;
+import com.github.mobile.accounts.AccountUtils;
+import com.github.mobile.accounts.AuthenticatedUserTask;
 import com.github.mobile.core.issue.IssueUtils;
 import com.github.mobile.ui.DialogFragmentActivity;
 import com.github.mobile.ui.StyledText;
@@ -155,6 +158,8 @@ public class EditIssueActivity extends DialogFragmentActivity {
         assigneeText = finder.find(id.tv_assignee_name);
         labelsText = finder.find(id.tv_labels);
 
+        checkCollaboratorStatus();
+
         Intent intent = getIntent();
 
         if (savedInstanceState != null)
@@ -181,41 +186,6 @@ public class EditIssueActivity extends DialogFragmentActivity {
         actionBar.setSubtitle(repository.generateId());
         avatars.bind(actionBar, (User) intent.getSerializableExtra(EXTRA_USER));
 
-        findViewById(id.ll_milestone).setOnClickListener(new OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                if (milestoneDialog == null)
-                    milestoneDialog = new MilestoneDialog(
-                            EditIssueActivity.this, ISSUE_MILESTONE_UPDATE,
-                            repository, milestoneService);
-                milestoneDialog.show(issue.getMilestone());
-            }
-        });
-
-        findViewById(id.ll_assignee).setOnClickListener(new OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                if (assigneeDialog == null)
-                    assigneeDialog = new AssigneeDialog(EditIssueActivity.this,
-                            ISSUE_ASSIGNEE_UPDATE, repository,
-                            collaboratorService);
-                assigneeDialog.show(issue.getAssignee());
-            }
-        });
-
-        findViewById(id.ll_labels).setOnClickListener(new OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                if (labelsDialog == null)
-                    labelsDialog = new LabelsDialog(EditIssueActivity.this,
-                            ISSUE_LABELS_UPDATE, repository, labelService);
-                labelsDialog.show(issue.getLabels());
-            }
-        });
-
         titleText.addTextChangedListener(new TextWatcherAdapter() {
 
             @Override
@@ -225,7 +195,8 @@ public class EditIssueActivity extends DialogFragmentActivity {
         });
 
         updateSaveMenu();
-        updateView();
+        titleText.setText(issue.getTitle());
+        bodyText.setText(issue.getBody());
     }
 
     @Override
@@ -251,6 +222,59 @@ public class EditIssueActivity extends DialogFragmentActivity {
             updateLabels();
             break;
         }
+    }
+
+    private void showMainContent() {
+        finder.find(id.sv_issue_content).setVisibility(View.VISIBLE);
+        finder.find(id.pb_loading).setVisibility(View.GONE);
+    }
+
+    private void showCollaboratorOptions() {
+        finder.find(id.tv_milestone_label).setVisibility(View.VISIBLE);
+        finder.find(id.ll_milestone).setVisibility(View.VISIBLE);
+        finder.find(id.tv_labels_label).setVisibility(View.VISIBLE);
+        finder.find(id.ll_labels).setVisibility(View.VISIBLE);
+        finder.find(id.tv_assignee_label).setVisibility(View.VISIBLE);
+        finder.find(id.ll_assignee).setVisibility(View.VISIBLE);
+
+        finder.onClick(id.ll_milestone, new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                if (milestoneDialog == null)
+                    milestoneDialog = new MilestoneDialog(
+                        EditIssueActivity.this, ISSUE_MILESTONE_UPDATE,
+                        repository, milestoneService);
+                milestoneDialog.show(issue.getMilestone());
+            }
+        });
+
+        finder.onClick(id.ll_assignee, new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                if (assigneeDialog == null)
+                    assigneeDialog = new AssigneeDialog(EditIssueActivity.this,
+                        ISSUE_ASSIGNEE_UPDATE, repository,
+                        collaboratorService);
+                assigneeDialog.show(issue.getAssignee());
+            }
+        });
+
+        finder.onClick(id.ll_labels, new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                if (labelsDialog == null)
+                    labelsDialog = new LabelsDialog(EditIssueActivity.this,
+                        ISSUE_LABELS_UPDATE, repository, labelService);
+                labelsDialog.show(issue.getLabels());
+            }
+        });
+
+        updateAssignee();
+        updateLabels();
+        updateMilestone();
     }
 
     private void updateMilestone() {
@@ -291,15 +315,6 @@ public class EditIssueActivity extends DialogFragmentActivity {
             LabelDrawableSpan.setText(labelsText, labels);
         else
             labelsText.setText(string.none);
-    }
-
-    private void updateView() {
-        titleText.setText(issue.getTitle());
-        bodyText.setText(issue.getBody());
-
-        updateAssignee();
-        updateLabels();
-        updateMilestone();
     }
 
     @Override
@@ -365,5 +380,32 @@ public class EditIssueActivity extends DialogFragmentActivity {
         default:
             return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void checkCollaboratorStatus() {
+        new AuthenticatedUserTask<Boolean>(this) {
+
+            @Override
+            public Boolean run(Account account) throws Exception {
+                return collaboratorService.isCollaborator(
+                    repository, AccountUtils.getLogin(EditIssueActivity.this));
+            }
+
+            @Override
+            protected void onSuccess(Boolean isCollaborator) throws Exception {
+                super.onSuccess(isCollaborator);
+
+                showMainContent();
+                if(isCollaborator)
+                    showCollaboratorOptions();
+            }
+
+            @Override
+            protected void onException(Exception e) throws RuntimeException {
+                super.onException(e);
+
+                showMainContent();
+            }
+        }.execute();
     }
 }
